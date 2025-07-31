@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo Khung Avatar Facebook</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tạo Khung Avatar Của Bạn</h1>
+            <p>Tải ảnh của bạn lên, căn chỉnh cho vừa vặn và tải về thành quả!</p>
+        </header>
+
+        <main class="editor-container">
+            <div id="canvas-container"></div>
+        </main>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="upload-btn" class="btn btn-primary">1. Tải Ảnh Lên</label>
+                <input type="file" id="upload-btn" accept="image/*" hidden>
+            </div>
+            
+            <div class="control-group">
+                <label for="zoom-slider">2. Phóng to / Thu nhỏ</label>
+                <input type="range" id="zoom-slider" min="0.2" max="3" step="0.05" value="1" disabled>
+            </div>
+            
+            <div class="control-group">
+                <button id="download-btn" class="btn btn-success" disabled>3. Tải Ảnh Về</button>
+            </div>
+        </div>
+
+        <footer>
+            <p>Tạo bởi Gemini</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/konva@9.3.6/konva.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
