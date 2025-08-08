@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Các thành phần UI
     const uploadBtn = document.getElementById('upload-btn');
     const zoomSlider = document.getElementById('zoom-slider');
     const downloadBtn = document.getElementById('download-btn');
     const container = document.getElementById('canvas-container');
+    const colorPicker = document.getElementById('color-picker');
+    const fanpageAvatarPreview = document.getElementById('fanpage-avatar-preview');
 
     const width = container.clientWidth;
     const height = container.clientHeight;
@@ -14,22 +17,53 @@ document.addEventListener('DOMContentLoaded', () => {
         height: height,
     });
 
+    const backgroundLayer = new Konva.Layer();
     const userImageLayer = new Konva.Layer();
     const frameLayer = new Konva.Layer();
-    stage.add(userImageLayer, frameLayer);
+    // Thứ tự thêm layer rất quan trọng: nền -> ảnh -> khung
+    stage.add(backgroundLayer, userImageLayer, frameLayer);
 
     let userImage = null;
+
+    // --- Tạo lớp nền màu và hiển thị nó ngay từ đầu ---
+    const backgroundRect = new Konva.Rect({
+        x: 0,
+        y: 0,
+        width: width,
+        height: height,
+        fill: colorPicker.value, // Lấy màu mặc định từ color picker
+    });
+    backgroundLayer.add(backgroundRect);
+    stage.draw();
+
+    // Hàm cập nhật bản xem trước
+    function updatePreview() {
+        // Sử dụng setTimeout để đảm bảo canvas đã vẽ xong trước khi lấy dữ liệu
+        setTimeout(() => {
+            const previewDataURL = stage.toDataURL({
+                width: 60,
+                height: 60,
+                pixelRatio: 2,
+            });
+            fanpageAvatarPreview.style.backgroundImage = `url(${previewDataURL})`;
+        }, 50); 
+    }
+
+    // --- Xử lý chọn màu ---
+    colorPicker.addEventListener('input', (e) => {
+        backgroundRect.fill(e.target.value);
+        updatePreview();
+    });
 
     // --- Xử lý tải ảnh người dùng lên ---
     uploadBtn.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
-
+        
         const reader = new FileReader();
         reader.onload = () => {
             Konva.Image.fromURL(reader.result, (img) => {
-                userImageLayer.destroyChildren(); // Xóa ảnh cũ nếu có
-                
+                userImageLayer.destroyChildren();
                 userImage = img;
                 userImage.setAttrs({
                     x: width / 2,
@@ -37,13 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     draggable: true,
                 });
 
-                // Căn giữa và điều chỉnh kích thước ban đầu
                 const aspectRatio = userImage.width() / userImage.height();
                 let newWidth, newHeight;
-                if (aspectRatio > 1) { // Ảnh ngang
+                if (aspectRatio > 1) {
                     newHeight = height;
                     newWidth = height * aspectRatio;
-                } else { // Ảnh dọc hoặc vuông
+                } else {
                     newWidth = width;
                     newHeight = width / aspectRatio;
                 }
@@ -55,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 userImageLayer.add(userImage);
                 zoomSlider.disabled = false;
                 downloadBtn.disabled = false;
+                updatePreview();
             });
         };
         reader.readAsDataURL(file);
@@ -65,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!userImage) return;
         const scale = parseFloat(e.target.value);
         userImage.scale({ x: scale, y: scale });
+        updatePreview();
     });
 
     // --- Tải và hiển thị ảnh khung ---
@@ -72,15 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
         frameImg.setAttrs({
             width: width,
             height: height,
-            listening: false, // Để khung không bắt sự kiện chuột
+            listening: false,
         });
         frameLayer.add(frameImg);
+        updatePreview(); // Cập nhật lại preview sau khi khung đã tải xong
     });
 
     // --- Xử lý tải ảnh đã ghép về ---
     downloadBtn.addEventListener('click', () => {
         const dataURL = stage.toDataURL({
-            pixelRatio: 3, // Tăng chất lượng ảnh xuất ra
+            pixelRatio: 3,
             mimeType: 'image/png',
         });
 

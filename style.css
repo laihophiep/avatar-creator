@@ -133,3 +133,49 @@ footer {
     font-size: 14px;
     color: #9aa0a6;
 }
+/* --- Bổ sung CSS cho các điều khiển mới --- */
+.controls {
+    border-top: 1px solid #e9ecef;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+#bg-type-selector {
+    border: 1px solid #dcdfe3;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+#bg-type-selector legend {
+    padding: 0 10px;
+    font-weight: 500;
+    color: #5f6368;
+}
+
+#bg-type-selector div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#bg-type-selector input[type="radio"] {
+    accent-color: #1a73e8;
+}
+
+#color-controls input[type="color"] {
+    width: 100%;
+    max-width: 300px;
+    height: 40px;
+    border: 1px solid #dcdfe3;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
