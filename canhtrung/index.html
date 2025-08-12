@@ -143,14 +143,25 @@
         .event-details h3 { margin: 0; font-size: 15px; font-weight: bold; }
         .event-details p { margin: 5px 0 0 0; font-size: 13px; color: #666; }
         #recalculate-btn-container { text-align: center; margin-top: 20px; }
+        .des-tool-ovulation {margin-bottom: 15px}
+        div#calendar-wrapper-current:after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background: #bebdbd5e;
+    top: 0;
+    right: calc(50% - 5px);
+}
     </style>
 </head>
 <body>
 
     <div class="app-container">
         <div class="calculator-tool">
-            <h1>Công cụ tính ngày rụng trứng</h1>
+            <div class="tool-title"><img scr=""><h1>Công cụ tính ngày rụng trứng</h1></div>
             
+            <div class="des-tool-ovulation">Bạn đã biết cách tính ngày rụng trứng? Hãy cùng tìm hiểu về các giai đoạn trong quá trình rụng trứng và dự đoán thời gian thụ thai tốt nhất với công cụ tính ngày rụng trứng</div>
             <div class="cycle-type-selector">
                 <label> 
                     <input type="radio" name="cycleType" value="regular" checked> 
@@ -175,14 +186,15 @@
                 <div id="irregular-cycle-inputs" class="input-form" style="display: none;">
                     <div class="form-group"> <label>Ngày đầu của kỳ kinh cuối</label> <select id="day-select-irregular"></select> </div>
                     <div class="form-group"> <label>Tháng</label> <select id="month-select-irregular"></select> </div>
-                    <div class="form-group"> <label>Chu kỳ ngắn nhất (6 tháng)</label> <input type="number" id="shortest-cycle" value="26" min="20"> </div>
-                    <div class="form-group"> <label>Chu kỳ dài nhất (6 tháng)</label> <input type="number" id="longest-cycle" value="32" min="20"> </div>
+                    <div class="form-group"> <label>Chu kỳ ngắn nhất (6 tháng gần đây)</label> <input type="number" id="shortest-cycle" value="26" min="20"> </div>
+                    <div class="form-group"> <label>Chu kỳ dài nhất (6 tháng gần đây)</label> <input type="number" id="longest-cycle" value="32" min="20"> </div>
                 </div>
                 <button id="calculate-btn">Tính toán ngay</button>
             </div>
+             <div style="text-align: center;margin-top: 20px;">#Được Tạo by Mr.Hiệp</div>
         </div>
         <div id="results-container" style="display: none;"></div>
-             <div style="text-align: center;margin-top: 20px;">#Được Tạo by Mr.Hiệp</div>
+            
     </div>
    
     <script>
