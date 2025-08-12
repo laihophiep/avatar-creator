@@ -23,13 +23,12 @@
             background-color: #fff;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border-radius: 10px;
-            overflow: hidden; /* Giúp bo tròn các góc đẹp hơn */
+            overflow: hidden;
         }
 
-        /* ▼▼▼ CSS MỚI CHO TOÀN BỘ KHU VỰC NHẬP LIỆU ▼▼▼ */
         .calculator-tool {
-            background-color: #fdf2f8; /* Màu hồng rất nhạt */
-            color: #9d174d; /* Màu hồng đậm cho chữ */
+            background-color: #fdf2f8;
+            color: #9d174d;
             padding: 30px 25px;
             text-align: center;
         }
@@ -48,9 +47,8 @@
             margin-right: auto;
         }
         
-        /* ▼▼▼ CSS MỚI CHO TAB LỰA CHỌN (PHẦN QUAN TRỌNG NHẤT) ▼▼▼ */
         .cycle-type-selector {
-            background-color: #f3f4f6; /* Nền màu xám nhạt cho "đường ray" */
+            background-color: #f3f4f6;
             border-radius: 30px;
             padding: 5px;
             margin: 0 auto 25px auto;
@@ -58,13 +56,8 @@
             gap: 5px;
             border: 1px solid #fce7f3;
         }
-        .cycle-type-selector label {
-            cursor: pointer;
-            /* Bỏ padding ở đây và chuyển vào span */
-        }
-        .cycle-type-selector input { 
-            display: none; 
-        }
+        .cycle-type-selector label { cursor: pointer; }
+        .cycle-type-selector input { display: none; }
         .cycle-type-selector span {
             display: block;
             padding: 10px 25px;
@@ -72,16 +65,14 @@
             transition: all 0.3s ease-in-out;
             font-size: 14px;
             font-weight: 500;
-            color: #6b7280; /* Màu chữ mặc định (màu xám) */
+            color: #6b7280;
         }
         .cycle-type-selector input:checked + span {
             background-color: #fff;
-            color: #be185d; /* Màu chữ khi được chọn (hồng đậm) */
+            color: #be185d;
             font-weight: 700;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Đổ bóng nhẹ tạo chiều sâu */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        /* ▲▲▲ KẾT THÚC CSS MỚI CHO TAB ▲▲▲ */
-
 
         .input-form { display: flex; justify-content: center; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
         .form-group { display: flex; flex-direction: column; align-items: center; min-width: 120px; padding: 5px; }
@@ -92,7 +83,7 @@
         }
         
         #calculate-btn, #recalculate-btn {
-            background-color: #e11d48; /* Màu nút bấm chính */
+            background-color: #e11d48;
             color: white; 
             border: none;
             padding: 14px 30px;
@@ -114,7 +105,6 @@
             background-color: #e85bad;
         }
 
-        /* CSS CHO PHẦN KẾT QUẢ (GIỮ NGUYÊN) */
         #results-container { padding: 25px; }
         .results-header { text-align: center; font-size: 18px; font-weight: bold; color: #be185d; margin-bottom: 15px; text-transform: uppercase; }
         #calendars-container { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
@@ -130,30 +120,80 @@
         .calendar-day.day-ovulation { background-color: #fce4ec; border: 2px solid #e50000; font-weight: bold; }
         .calendar-day.day-implantation { background-color: #e0f7fa; }
         .calendar-day.day-test { background-color: #f3e5f5; }
-        [data-tooltip] { position: relative; cursor: pointer; }
-        [data-tooltip]::after {
-            content: attr(data-tooltip); position: absolute; bottom: 105%; left: 50%; transform: translateX(-50%);
-            background-color: #333; color: #fff; padding: 5px 10px; border-radius: 5px; font-size: 12px;
-            white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 10;
+
+        /* ▼▼▼ CSS MỚI CHO TOOLTIP (NÂNG CẤP) ▼▼▼ */
+        [data-tooltip]:not([data-tooltip=""]) {
+            position: relative;
+            cursor: pointer;
         }
-        [data-tooltip]:hover::after { opacity: 1; visibility: visible; }
+        /* Hộp văn bản của tooltip */
+        [data-tooltip]:not([data-tooltip=""])::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px); /* Nằm phía trên mũi tên */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 10;
+        }
+        /* Mũi tên của tooltip */
+        [data-tooltip]:not([data-tooltip=""])::after {
+            content: '';
+            position: absolute;
+            bottom: 100%; /* Nằm ngay trên ngày */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #333; /* Mũi tên chỉ lên */
+            
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 10;
+        }
+        /* Hiển thị tooltip khi di chuột */
+        [data-tooltip]:not([data-tooltip=""]):hover::before,
+        [data-tooltip]:not([data-tooltip=""]):hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+        /* ▲▲▲ KẾT THÚC CSS TOOLTIP ▲▲▲ */
+
         .event-list { margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; }
         .event-item { display: flex; align-items: flex-start; padding: 15px 5px; border-bottom: 1px solid #eee; }
         .event-icon { font-size: 24px; margin-right: 15px; width: 30px; text-align: center; color: #be185d; padding-top: 3px; }
         .event-details h3 { margin: 0; font-size: 15px; font-weight: bold; }
         .event-details p { margin: 5px 0 0 0; font-size: 13px; color: #666; }
         #recalculate-btn-container { text-align: center; margin-top: 20px; }
+<<<<<<< HEAD
+         .des-tool-ovulation {margin-bottom: 15px}
+=======
         .des-tool-ovulation {margin-bottom: 15px}
        
+>>>>>>> 304b85d51369bb87c0a1e25c497f7eb6663b96b1
     </style>
 </head>
 <body>
 
     <div class="app-container">
         <div class="calculator-tool">
-            <div class="tool-title"><img scr=""><h1>Công cụ tính ngày rụng trứng</h1></div>
-            
+             <div class="tool-title"><img scr=""><h1>Công cụ tính ngày rụng trứng</h1></div>
             <div class="des-tool-ovulation">Bạn đã biết cách tính ngày rụng trứng? Hãy cùng tìm hiểu về các giai đoạn trong quá trình rụng trứng và dự đoán thời gian thụ thai tốt nhất với công cụ tính ngày rụng trứng</div>
+            
             <div class="cycle-type-selector">
                 <label> 
                     <input type="radio" name="cycleType" value="regular" checked> 
@@ -178,22 +218,18 @@
                 <div id="irregular-cycle-inputs" class="input-form" style="display: none;">
                     <div class="form-group"> <label>Ngày đầu của kỳ kinh cuối</label> <select id="day-select-irregular"></select> </div>
                     <div class="form-group"> <label>Tháng</label> <select id="month-select-irregular"></select> </div>
-                    <div class="form-group"> <label>Chu kỳ ngắn nhất (6 tháng gần đây)</label> <input type="number" id="shortest-cycle" value="26" min="20"> </div>
-                    <div class="form-group"> <label>Chu kỳ dài nhất (6 tháng gần đây)</label> <input type="number" id="longest-cycle" value="32" min="20"> </div>
+                    <div class="form-group"> <label>Chu kỳ ngắn nhất (6 tháng)</label> <input type="number" id="shortest-cycle" value="26" min="20"> </div>
+                    <div class="form-group"> <label>Chu kỳ dài nhất (6 tháng)</label> <input type="number" id="longest-cycle" value="32" min="20"> </div>
                 </div>
                 <button id="calculate-btn">Tính toán ngay</button>
             </div>
-             <div style="text-align: center;margin-top: 20px;">#Được Tạo by Mr.Hiệp</div>
         </div>
-        <div id="results-container" style="display: none;"></div>
-            
+        <div id="results-container" style="display: none;">
+             </div>
     </div>
-   
+
     <script>
         // Toàn bộ phần SCRIPT giữ nguyên như phiên bản trước
-        // Bạn chỉ cần copy và dán toàn bộ phần script từ phiên bản cuối cùng trước đó vào đây.
-        // Tôi sẽ dán lại toàn bộ để đảm bảo bạn có file hoàn chỉnh.
-
         document.addEventListener('DOMContentLoaded', function() {
             const daySelect = document.getElementById('day-select');
             const monthSelect = document.getElementById('month-select');
@@ -426,7 +462,5 @@
             });
         }
     </script>
-
-
 </body>
 </html>
