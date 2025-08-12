@@ -120,51 +120,43 @@
         .calendar-day.day-ovulation { background-color: #fce4ec; border: 2px solid #e50000; font-weight: bold; }
         .calendar-day.day-implantation { background-color: #e0f7fa; }
         .calendar-day.day-test { background-color: #f3e5f5; }
-
-        /* ▼▼▼ CSS MỚI CHO TOOLTIP (NÂNG CẤP) ▼▼▼ */
-        [data-tooltip]:not([data-tooltip=""]) {
-            position: relative;
-            cursor: pointer;
-        }
-        /* Hộp văn bản của tooltip */
+        
+        [data-tooltip] { position: relative; cursor: pointer; }
         [data-tooltip]:not([data-tooltip=""])::before {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: calc(100% + 8px); /* Nằm phía trên mũi tên */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #333;
-            color: #fff;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 10;
-        }
-        /* Mũi tên của tooltip */
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 10;
+}
         [data-tooltip]:not([data-tooltip=""])::after {
-            content: '';
-            position: absolute;
-            bottom: 100%; /* Nằm ngay trên ngày */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-top: 6px solid #333; /* Mũi tên chỉ lên */
-            
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 10;
-        }
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #333;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    z-index: 10;
+}
         /* Hiển thị tooltip khi di chuột */
         [data-tooltip]:not([data-tooltip=""]):hover::before,
         [data-tooltip]:not([data-tooltip=""]):hover::after {
@@ -180,7 +172,7 @@
         .event-details p { margin: 5px 0 0 0; font-size: 13px; color: #666; }
         #recalculate-btn-container { text-align: center; margin-top: 20px; }
          .des-tool-ovulation {margin-bottom: 15px}
-        .banquyen-div {
+.banquyen-div {
     margin-top: 30px;
     color: #a79292;
 }
@@ -190,8 +182,7 @@
 
     <div class="app-container">
         <div class="calculator-tool">
-             <div class="tool-title"><img scr=""><h1>Công cụ tính ngày rụng trứng</h1></div>
-            <div class="des-tool-ovulation">Bạn đã biết cách tính ngày rụng trứng? Hãy cùng tìm hiểu về các giai đoạn trong quá trình rụng trứng và dự đoán thời gian thụ thai tốt nhất với công cụ tính ngày rụng trứng</div>
+            <h1>Công cụ tính ngày rụng trứng</h1>
             
             <div class="cycle-type-selector">
                 <label> 
@@ -222,14 +213,13 @@
                 </div>
                 <button id="calculate-btn">Tính toán ngay</button>
             </div>
-            <div class="banquyen-div">© Được tạo bởi Mr.Hiep </div>
+            <div class="banquyen-div" bis_skin_checked="1">© Được tạo bởi Mr.Hiep </div>
         </div>
         <div id="results-container" style="display: none;">
              </div>
     </div>
 
     <script>
-        // Toàn bộ phần SCRIPT giữ nguyên như phiên bản trước
         document.addEventListener('DOMContentLoaded', function() {
             const daySelect = document.getElementById('day-select');
             const monthSelect = document.getElementById('month-select');
@@ -320,9 +310,16 @@
                 for (let d = 0; d <= daysBetween(fertileWindow.start, fertileWindow.end); d++) {
                     const currentFertileDay = addDays(fertileWindow.start, d);
                     let title = 'Ngày có khả năng thụ thai';
-                    if (d === 0) title = 'Bắt đầu khoảng thời gian thụ thai';
-                    if (d === daysBetween(fertileWindow.start, fertileWindow.end)) title = 'Kết thúc khoảng thời gian thụ thai';
-                    events.push({ date: currentFertileDay, type: 'fertile-range', title: title });
+                    let desc = 'Đây là một trong những ngày có khả năng thụ thai của bạn.';
+                    if (d === 0) {
+                        title = 'Bắt đầu khoảng thời gian thụ thai';
+                        desc = 'Cơ hội thụ thai bắt đầu tăng từ ngày này.';
+                    }
+                    if (d === daysBetween(fertileWindow.start, fertileWindow.end)) {
+                        title = 'Kết thúc khoảng thời gian thụ thai';
+                        desc = 'Cơ hội thụ thai giảm dần sau ngày này.';
+                    }
+                    events.push({ date: currentFertileDay, type: 'fertile-range', title: title, desc: desc });
                 }
             }
             
@@ -337,17 +334,17 @@
                 { date: addDays(ovulationDate, 9), type: 'implantation', title: 'Ngày làm tổ dự kiến', desc: 'Nếu thụ thai, trứng có thể làm tổ trong khoảng thời gian này.' },
                 { date: addDays(ovulationDate, 11), type: 'test', title: 'Ngày có thể thử thai', desc: 'Nồng độ hormone đủ cao để que thử thai có thể phát hiện.' },
                 { date: nextPeriodDate, type: 'period', title: 'Ngày kinh nguyệt tiếp theo dự kiến', desc: 'Chu kỳ tiếp theo được dự đoán sẽ bắt đầu vào ngày này.' },
-                { date: addDays(lastPeriodDate, 90), type: 'milestone', title: 'Kết thúc tam cá nguyệt thứ nhất' },
-                { date: addDays(lastPeriodDate, 189), type: 'milestone', title: 'Kết thúc tam cá nguyệt thứ hai' },
-                { date: addDays(lastPeriodDate, 280), type: 'milestone', title: 'Ngày dự sinh' }
+                { date: addDays(lastPeriodDate, 90), type: 'milestone', title: 'Kết thúc tam cá nguyệt thứ nhất', desc: 'Bạn đã hoàn thành 1/3 chặng đường thai kỳ.'},
+                { date: addDays(lastPeriodDate, 189), type: 'milestone', title: 'Kết thúc tam cá nguyệt thứ hai', desc: 'Bạn đã đi được 2/3 chặng đường thai kỳ.'},
+                { date: addDays(lastPeriodDate, 280), type: 'milestone', title: 'Ngày dự sinh', desc: 'Ngày dự kiến chào đón em bé của bạn.'}
             ];
 
             const fertileStart = addDays(ovulationDate, -5);
             const fertileEnd = addDays(ovulationDate, 1);
-             for (let d = 0; d <= daysBetween(fertileStart, fertileEnd); d++) {
+            for (let d = 0; d <= daysBetween(fertileStart, fertileEnd); d++) {
                 const currentFertileDay = addDays(fertileStart, d);
                 if (currentFertileDay.toDateString() !== ovulationDate.toDateString()) {
-                     events.push({ date: currentFertileDay, type: 'fertile-range', title: 'Ngày có khả năng thụ thai' });
+                     events.push({ date: currentFertileDay, type: 'fertile-range', title: 'Ngày có khả năng thụ thai', desc: 'Đây là một trong những ngày có khả năng thụ thai cao.' });
                 }
             }
             return events;
@@ -409,10 +406,6 @@
                     cellClass += ` day-${eventOnDay.type}`;
                     tooltip = eventOnDay.title;
                     icon = iconMap[eventOnDay.type] || '';
-                } else if (day >= fertileWindow.start && day <= fertileWindow.end) {
-                    cellClass += ' day-fertile-range';
-                    tooltip = 'Ngày có khả năng thụ thai';
-                    icon = iconMap['fertile-range'];
                 }
 
                 calendarHTML += `<div class="${cellClass}" data-tooltip="${tooltip}">
@@ -433,14 +426,13 @@
             const uniqueEvents = [];
             const seenDates = new Set();
             events.forEach(event => {
-                if (event.desc || ['ovulation', 'implantation', 'test', 'milestone'].includes(event.type) || event.title.includes('Bắt đầu') || event.title.includes('Kết thúc') || event.title.includes('Ngày kinh nguyệt tiếp theo')) {
-                    const dateString = event.date.toDateString();
-                    if (!seenDates.has(dateString)) {
-                        uniqueEvents.push(event);
-                        seenDates.add(dateString);
-                    }
+                const dateString = event.date.toDateString();
+                if (!seenDates.has(dateString)) {
+                    uniqueEvents.push(event);
+                    seenDates.add(dateString);
                 }
             });
+
             uniqueEvents.sort((a,b) => a.date - b.date);
 
             uniqueEvents.forEach(event => {
