@@ -121,7 +121,7 @@
         .calendar-day.day-implantation { background-color: #e0f7fa; }
         .calendar-day.day-test { background-color: #f3e5f5; }
         
-        [data-tooltip] { position: relative; cursor: pointer; }
+     /*   [data-tooltip] { position: relative; cursor: pointer; }
         [data-tooltip]:not([data-tooltip=""])::before {
     content: attr(data-tooltip);
     position: absolute;
@@ -158,13 +158,100 @@
     z-index: 10;
 }
         /* Hiển thị tooltip khi di chuột */
-        [data-tooltip]:not([data-tooltip=""]):hover::before,
+       /* [data-tooltip]:not([data-tooltip=""]):hover::before,
         [data-tooltip]:not([data-tooltip=""]):hover::after {
             opacity: 1;
             visibility: visible;
+        }*/
+        /* ▲▲▲ KẾT THÚC CSS TOOLTIP ▲▲▲ */*/
+/* ▼▼▼ CSS CHO TOOLTIP (NÂNG CẤP) ▼▼▼ */
+       /* [data-tooltip]:not([data-tooltip=""]) {
+            position: relative;
+            cursor: pointer;
+        }
+        [data-tooltip]:not([data-tooltip=""])::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-8px); 
+            background-color: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 10;
+            pointer-events: none; /* Tránh tooltip tự che nó */
+        }*/
+        /* Hiển thị tooltip khi di chuột (cho máy tính) HOẶC khi có class .tooltip-visible (cho mobile) */
+      /*  [data-tooltip]:not([data-tooltip=""]):hover::after,
+        [data-tooltip].tooltip-visible::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-12px);*/ /* Hiệu ứng nảy lên */
+        /*}*/
+        /* ▼▼▼ CSS MỚI CHO TOOLTIP CÓ MŨI TÊN ▼▼▼ */
+        [data-tooltip]:not([data-tooltip=""]) {
+            position: relative;
+            cursor: pointer;
+        }
+        /* Hộp văn bản của tooltip (dùng ::before) */
+        [data-tooltip]:not([data-tooltip=""])::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 5px); /* Vị trí phía trên mũi tên */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            
+            /* Trạng thái ẩn ban đầu */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none; 
+        }
+        /* Mũi tên của tooltip (dùng ::after) */
+        [data-tooltip]:not([data-tooltip=""])::after {
+            content: '';
+            position: absolute;
+            bottom: 100%; 
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #333; /* Đây là hình tam giác */
+            
+            /* Trạng thái ẩn ban đầu */
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        /* Quy tắc hiển thị cho cả hộp và mũi tên */
+        [data-tooltip]:not([data-tooltip=""]):hover::before,
+        [data-tooltip]:not([data-tooltip=""]):hover::after,
+        [data-tooltip].tooltip-visible::before,
+        [data-tooltip].tooltip-visible::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-6px); /* Hiệu ứng nảy lên */
         }
         /* ▲▲▲ KẾT THÚC CSS TOOLTIP ▲▲▲ */
-
         .event-list { margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px; }
         .event-item { display: flex; align-items: flex-start; padding: 15px 5px; border-bottom: 1px solid #eee; }
         .event-icon { font-size: 24px; margin-right: 15px; width: 30px; text-align: center; color: #be185d; padding-top: 3px; }
@@ -172,11 +259,7 @@
         .event-details p { margin: 5px 0 0 0; font-size: 13px; color: #666; }
         #recalculate-btn-container { text-align: center; margin-top: 20px; }
          .des-tool-ovulation {margin-bottom: 15px}
-.banquyen-div {
-    margin-top: 30px;
-    color: #a79292;
-    text-align:center
-}
+
     </style>
 </head>
 <body>
@@ -214,7 +297,6 @@
                 </div>
                 <button id="calculate-btn">Tính toán ngay</button>
             </div>
-            <div class="banquyen-div" bis_skin_checked="1">© Được tạo bởi Mr.Hiep </div>
         </div>
         <div id="results-container" style="display: none;">
              </div>
@@ -361,7 +443,7 @@
                     <div id="calendar-wrapper-next" class="calendar-wrapper"></div>
                 </div>
                 <div id="event-list" class="event-list"></div>
-                <div id="recalculate-btn-container"><button id="recalculate-btn">Tính toán lại</button></div>  <div class="banquyen-div" bis_skin_checked="1">© Được tạo bởi Mr.Hiep </div>
+                <div id="recalculate-btn-container"><button id="recalculate-btn">Tính toán lại</button></div>
             `;
             
             generateCalendar('calendar-wrapper-current', lastPeriodDate.getFullYear(), lastPeriodDate.getMonth(), events, fertileWindow);
@@ -418,6 +500,28 @@
 
             calendarHTML += `</div>`;
             wrapper.innerHTML = calendarHTML;
+        }
+        function initializeTooltips() {
+            const tooltipElements = document.querySelectorAll('[data-tooltip]:not([data-tooltip=""])');
+
+            // Hàm để đóng tất cả các tooltip đang mở
+            const closeAllTooltips = () => {
+                tooltipElements.forEach(el => el.classList.remove('tooltip-visible'));
+            };
+
+            tooltipElements.forEach(el => {
+                el.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Ngăn sự kiện click lan ra body
+                    const isVisible = this.classList.contains('tooltip-visible');
+                    closeAllTooltips(); // Luôn đóng các tooltip khác trước
+                    if (!isVisible) {
+                        this.classList.add('tooltip-visible'); // Hiển thị tooltip vừa click
+                    }
+                });
+            });
+
+            // Nếu click ra ngoài, đóng tất cả tooltip
+            document.body.addEventListener('click', closeAllTooltips);
         }
         
         function generateEventList(events) {
