@@ -266,8 +266,8 @@
 
     <div class="app-container">
         <div class="calculator-tool">
-            <h1>Công cụ tính ngày rụng trứng</h1>
-            
+           <div class="tool-title"><img scr=""><h1>Công cụ tính ngày rụng trứng</h1></div>
+            <div class="des-tool-ovulation">Bạn đã biết cách tính ngày rụng trứng? Hãy cùng tìm hiểu về các giai đoạn trong quá trình rụng trứng và dự đoán thời gian thụ thai tốt nhất với công cụ tính ngày rụng trứng</div>
             <div class="cycle-type-selector">
                 <label> 
                     <input type="radio" name="cycleType" value="regular" checked> 
@@ -297,6 +297,7 @@
                 </div>
                 <button id="calculate-btn">Tính toán ngay</button>
             </div>
+            <div style="text-align: center;margin-top: 20px;">#Được Tạo by Mr.Hiệp</div>
         </div>
         <div id="results-container" style="display: none;">
              </div>
@@ -443,7 +444,7 @@
                     <div id="calendar-wrapper-next" class="calendar-wrapper"></div>
                 </div>
                 <div id="event-list" class="event-list"></div>
-                <div id="recalculate-btn-container"><button id="recalculate-btn">Tính toán lại</button></div>
+                <div id="recalculate-btn-container"><button id="recalculate-btn">Tính toán lại</button></div><div style="text-align: center;margin-top: 20px;">#Được Tạo by Mr.Hiệp</div>
             `;
             
             generateCalendar('calendar-wrapper-current', lastPeriodDate.getFullYear(), lastPeriodDate.getMonth(), events, fertileWindow);
